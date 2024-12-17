@@ -91,7 +91,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
                 SizedBox(height: 120,),
+        ElevatedButton(onPressed: () {
+           followers.clear();
+           setState(() {
 
+           });
+
+        }, child: Text('clear clipboard')),
                 ElevatedButton(
                     onPressed: () async {
                       final clipboardData = await Clipboard.getData('text/plain');
