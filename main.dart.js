@@ -76405,7 +76405,7 @@ l.a.toString
 i=A.fd("Followers management",k,k,k,k,k,k)
 s=A.fd("number of followers to take",k,k,k,k,k,k)
 r=t.E
-s=A.TY(A.b([s,A.nT(new A.yf(l.f,B.LC,B.Kp,B.Kq,!0,k),k,100),A.am2(A.fd("Save followers to clipboard",k,k,k,k,k,k),new A.aci(l)),A.nT(k,120,k),A.am2(A.fd("Load followers from a file",k,k,k,k,k,k),new A.acj(l))],r),B.bx,B.jq,B.fZ)
+s=A.TY(A.b([s,A.nT(new A.yf(l.f,B.LC,B.Kp,B.Kq,!0,k),k,100),A.am2(A.fd("Save followers to clipboard",k,k,k,k,k,k),new A.aci(l)),A.nT(k,120,k),A.am2(A.fd("Load followers from clipboard",k,k,k,k,k,k),new A.acj(l))],r),B.bx,B.jq,B.fZ)
 q=l.d.a
 p=A.fd("total followers "+q,k,k,k,k,k,k)
 o=A.fd(l.e,k,k,k,k,k,k)
