@@ -117,7 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           message = 'Adding ${newItems.length}, actual increase ${followersAfter - followersBefore}';
                         });
                     },
-                    child: Text('Load followers from a file'))
+                    child: Text('Load followers from clipboard'))
               ],
             ),
             Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
