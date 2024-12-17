@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(const MyApp());
@@ -38,7 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String message = '';
   TextEditingController controller = TextEditingController(text: '1000');
   final ScrollController _scrollController = ScrollController(); // Controller for ListView and Scrollbar
-  final follower2 = <int>[];
+
 
   @override
   Widget build(BuildContext context) {
@@ -71,34 +72,39 @@ class _MyHomePageState extends State<MyHomePage> {
                     )),
                 ElevatedButton(
                     onPressed: () async {
-                      String? outputFile = await FilePicker.platform.saveFile(
-                        dialogTitle: 'Please select an output file:',
-                        fileName: '*.txt',
-                      );
 
-                      if (outputFile != null) {
-                        File file = File(outputFile);
+
+
                         List<int> toSave = followers.take(int.tryParse(controller.text) ?? 0).toList();
                         String fileContent = toSave.map((int num) => num.toString()).join('\n');
-                        await file.writeAsString(fileContent);
+                        Clipboard.setData(ClipboardData(text: fileContent));
+
+
+
+
+                      setState(() {
                         followers.removeAll(toSave);
                         message = 'Taking out ${toSave.length}';
-                      }
-
-                      setState(() {});
+                      });
                     },
-                    child: Text('Save followers to a file')),
+                    child: Text('Save followers to clipboard')),
 
 
                 SizedBox(height: 120,),
 
                 ElevatedButton(
                     onPressed: () async {
-                      FilePickerResult? result = await FilePicker.platform.pickFiles();
-
-                      if (result != null) {
-                        File file = File(result.files.single.path!);
-                        List<String> lines = await file.readAsLines();
+                      final clipboardData = await Clipboard.getData('text/plain');
+                      if (clipboardData == null) {
+                        return;
+                      }
+                     
+                        String clipboardText = clipboardData.text ?? '';
+                        print('Clipboard Text: $clipboardText');
+                      
+                      
+                        
+                        List<String> lines = clipboardText.split('\n');
                         final newItems = lines
                             .where((line) => line.trim().isNotEmpty)
                             .map<int>((line) => int.tryParse(line.trim()) ?? 0) // Convert to int
@@ -107,13 +113,9 @@ class _MyHomePageState extends State<MyHomePage> {
                         int followersBefore = followers.length;
                         followers.addAll(newItems);
                         int followersAfter = followers.length;
-                        follower2.addAll(followers);
                         setState(() {
                           message = 'Adding ${newItems.length}, actual increase ${followersAfter - followersBefore}';
                         });
-                      } else {
-                        // User canceled the picker
-                      }
                     },
                     child: Text('Load followers from a file'))
               ],
@@ -137,11 +139,11 @@ class _MyHomePageState extends State<MyHomePage> {
                       controller: _scrollController,
                       child: ListView.builder(
                           controller: _scrollController,
-                          itemCount: follower2.length,
+                          itemCount: followers.length,
                           cacheExtent: 1000,
                           itemBuilder: (context, index) {
                             //  ListTile( key: ValueKey(index), title: Text('$index - ${followers.elementAt(index)}'));
-                            return Text('$index - ${follower2.elementAt(index)}');
+                            return Text('$index - ${followers.elementAt(index)}');
                           })))),
             ]),
           ]),
