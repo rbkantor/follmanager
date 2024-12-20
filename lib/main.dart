@@ -227,10 +227,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: ElevatedButton(
                       onPressed: () async {
                         for (final email in emails) {
-                          final split = email.split('@');
-                          if (split.length == 2) {
-                            final domain = split[1] + ':imap.firstmail.ltd:993';
-                            domains.add(domain);
+                          final split1 = email.split('@');
+                          if (split1.length == 2) {
+                            final split2 = split1[1].split(':');
+                            if (split2.length == 2) {
+                              final domain = split2[0] + ':imap.firstmail.ltd:993';
+                              domains.add(domain);
+                            }
                           }
                         }
                         setState(() {
